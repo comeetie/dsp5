@@ -1,0 +1,628 @@
+---
+title: "Data Science, </br>Séance 3 : SQL base de données"
+author: "Etienne Côme"
+date: "21 novembre 2018"
+output:
+  revealjs::revealjs_presentation:
+    theme: night
+    transition: none
+    self_contained: true
+    css: slides.css
+  beamer_presentation:
+    toc: false
+    incremental: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Base de données relationnelles
+<ul>
+<li> Développer dans les années 70
+<li> Permet de stocker des volume importants
+<li> Permet d'éviter la redondance
+<li> Inspirer de l'algèbre relationnel
+<li> ~ Standardiser avec le langage SQL
+<li> Difficulté de distribuer sur plusieurs machines</br>
+&rarr; Développement des bases noSQL : Mongo, Cassandra, ...
+</ul>
+
+
+## Base de données relationnelles
+
+Différentes systèmes de gestion de base de données (SGBD) plus ou moins standardisé :</br>
+
+<ul> 
+<li> Libres : <a href="http://www.mysql.fr/">mySQL</a>, <a href="http://www.postgresql.org/">PostGreSQL</a>, ...
+<li> Fermées : <a href="http://www.oracle.com/us/products/database/overview/index.html">Oracle</a>, <a href="http://en.wikipedia.org/wiki/Microsoft_SQL_Server">Microsoft SQL Server</a>, ...
+</ul>
+pour cette séance :
+<h4><a href="">SQLite</a></h4>
+Base utilisée pour les exercices, pas de serveur à configurer embarqué dans un fichier sqlite.
+
+
+
+## Algèbre Relationnelle 
+<h4>Relations (ou table) :</h4>
+Ensemble de n-uplets
+
+<h4>Algèbre</h4>
+Définition d'opération élémentaires permettant d'extraire les informations recherchées. </br>
+Ces opérations prennent une (opérateurs unaires) ou deux relations (opérateurs binaires) et fournissent une relation en résultat.
+
+
+
+## Algèbre Relationnelle 
+<h4>Opérations <i class="red">unaire</i> de base de l'algèbre relationnel</h4>
+à partir d'un ensemble A, obtenir un ensemble B
+<ul>
+<li><span class="green">Sélection (ou projection), $B=\sigma_s(A)$ : </span></br> contenant uniquement les n-uplets de A qui correspondent à certains critères 
+</br><span class="blue">&rarr;Suppression de lignes</span> 
+<li> <span class="green">Restriction, $B=\pi_r(A)$</span> :</br> dont les n-uplets contiennent certaines composantes des n-uplets de A
+</br><span class="blue">&rarr;Suppression de colonnes</span> 
+</ul>
+
+
+## Algèbre Relationnelle
+<h4>Opérations <i class="red">binaire</i> de base de l'algèbre relationnel</h4>
+à partir des ensembles A et B, obtenir un ensemble C
+<ul>
+<li><span class="green">Union, $C=A \cup B$</span> :</br> qui contient les n-uplets présents dans A ou dans B
+<li><span class="green">Différence, $C = A - B$</span> :</br> qui contient les n-uplets présents dans A mais pas dans B
+<li><span class="green">Produit cartésien, $C = A \times B$</span> :</br> qui contient des n-uplets qui sont toutes les combinaisons possibles des n-uplets de A avec les n-uplets de B.
+</ul>
+
+## Algèbre Relationnelle 
+<h4>Opérations <i class="red">binaire</i> <i class="green">dérivées</i> de l'algèbre relationnel</h4>
+à partir des ensembles A et B, obtenir un ensemble C
+<ul>
+<li><span class="green">Jointure, $C=A \bowtie_q B = \sigma_q(A \times B)$</span> :</br> qui est le produit cartésien de chaque n-uplet de A pour lesquels il existe des n-uplets de B où la valeur de la composante M de A est identique à la valeur de la composante N de B
+<li><span class="green">Intersection, $C = A \cup B = A - ( A - B )$</span> :</br> qui contient les n-uplets présents à la fois dans A et dans B
+<li><span class="green">Division, $C = A \div B = \pi_r(A) - \pi_r((\pi_r(A)\times B)-A)$</span> :</br> qui contient des n-uplets qui sont toutes les combinaisons possibles des n-uplets de A avec les n-uplets de B.
+</ul>
+
+
+
+##
+<h2 class="red">SQL : </h2> <h2 class="red">Structured </h2><h2 class="red">Query</h2> <h2 class="red">Langage</h2>
+
+
+## SQL
+
+<h4 class="green">Interrogation des données</h4>
+<pre><code class="sql">SELECT * FROM table WHERE conditions</code></pre>
+<h4 class="blue">Définition de la structure des données</h4>
+<pre><code class="sql">CREATE TABLE, ALTER TABLE, DROP TABLE</code></pre>
+<h4 class="purple">Manipulation des données <a href="http://fr.wikipedia.org/wiki/CRUD">(C.R.U.D)</a></h4>
+<pre><code class="sql">INSERT, UPDATE, DELETE</code></pre>
++ contraintes (intégrité)</br>
++ gestion des droits
+
+
+
+## SQL, Structure d'une requête simple
+
+<h4>Sélection des attributs</h4>
+<pre><code class="c">SELECT attr1 as a, attr2 as b</code></pre>
+<h4>Liste des relations concernées par la requête</h4>
+<pre><code class="c">FROM table1 as t1, table2 as t2</code></pre>
+<h4>Opération de restriction (conditions)</h4>
+<pre><code class="c">WHERE t1.attr1=t2.attr2 AND t1.attr3> 5</code></pre>
+
+Le résultat est l’ensemble de TOUS les n-uplets (pas de suppression des doublons) respectant la condition 
+et contenant uniquement les attributs indiqués.
+
+
+## SQL, la clause WHERE
+<h4>Les différents opérateurs</h4>
+<ul>
+<li> Opérateurs relationnels : <, <=, =, <>, >=, > 
+<li> Opérateurs arithmétiques : +, -, *, / 
+<li> Opérateurs logiques : AND, OR, NOT 
+<li> Autres : LIKE, BETWEEN, IS NULL, IN, EXISTS, ...
+</ul>
+</br>
+<h4>Like, matching partiel sur les chaînes de caractères :</h4>
+<pre><code class="sql">SELECT NomF, VilF, AdrF FROM Fournisseur 
+WHERE VilF LIKE 'Saint%' OR VilF LIKE '_aint%'</code>
+</pre>
+<h4>Between, condition sur un range :</h4>
+<pre><code class="sql">SELECT * FROM Fournisseur WHERE NomF BETWEEN 'A%' AND 'G%'
+</code>
+</pre>
+
+
+
+## SQL, produit cartésien :
+<h4>From + plusieurs tables :</h4>
+<ul>
+<li>Possibilité d'utiliser des alias (as)
+</ul>
+</br>
+<h4>Exemple :</h4>
+<pre><code class="sql">SELECT f.NomF, f.VilF, l.nomP FROM Fournisseur AS f, Livraison AS l</code>
+</pre>
+
+
+
+## SQL, jointure :
+
+<h4>Produit cartésien + where + foreign.key=primary.key :</h4>
+<pre><code class="sql">SELECT f.NomF, f.VilF, l.nomP 
+FROM Fournisseur AS f, Livraison AS l 
+WHERE f.NoF = l.NoF</code>
+</pre>
+<h4>Possibilité de rajouter des conditions</h4>
+<pre><code class="sql">SELECT f.NomF, f.VilF, l.nomP 
+FROM Fournisseur AS f, Livraison AS l 
+WHERE f.NoF = l.NoF and f.VilF LIKE 'P%'</code>
+</pre>
+
+
+## SQL, l'opérateur GROUP BY :
+<h4>Possibilités</h4>
+<ul>
+<li> Comptage : COUNT, COUNT DISTINCT 
+<li> Arithmètique : AVG, SUM, ...  
+<li> Conditions sur le groupe : HAVING 
+</ul>
+</br></br>
+<h4>Exemples :</h4>
+Comptage des fournisseurs par villes :
+<pre><code class="sql">SELECT COUNT(DISTINCT NomF), VilF FROM Fournisseur GROUP BY VilF</code></pre>
+Comptage des fournisseurs pour les villes ayant + de 5 fournisseurs :
+<pre><code class="sql">SELECT COUNT(DISTINCT NomF), VilF FROM Fournisseur 
+GROUP BY VilF HAVING COUNT(DISTINCT NomF)>5</code>
+</pre>
+
+
+## SQL, l'opérateur ORDER BY
+<h4>Gestion du tri de la table</h4>
+<ul>
+<li> DESC : descending, ASC : ascending 
+<li> LIMIT : pour limiter le nombre de résultats retourner
+</ul>
+</br>
+<h4>Exemples :</h4>
+<pre><code class="sql">SELECT NomF, VilF, AdrF 
+FROM Fournisseur 
+WHERE VilF LIKE 'Saint%' 
+ORDER BY NomF DESC LIMIT 10</code>
+</pre>
+
+
+## SQL, chaine de charactères et dates
+Pas forcément uniformisé entre les différents système de bdd
+<h4>Concatenation :</h4>
+<ul>
+<li> || : sqlite 
+<li> CONCAT() : mySQL, PostgreSQL,...
+</ul>
+<h4>Dates :</h4>
+<ul>
+<li> STRFTIME('%s',attr), DATE(attr) : sqlite
+<li> DATE_FORMAT(attr,'%H'), DATE_SUB(attr1,attr2) : mySQL
+<li> ...
+</ul>
+<h4>Exemples (sqlite):</h4>
+<pre><code class="sql">SELECT MIN(strftime('%s',l.Date)), VilF, AdrF, NomF 
+FROM Livraison AS l, fournisseur AS f GROUP BY NomF
+</code>
+</pre>
+
+
+
+
+## SQL, définition d'un schéma
+<ul>
+<li>Définition des variables (type)
+<li>Contraintes d'unicité
+<li>Primary key, Foreign key
+<li>Index
+</ul>
+<h4>Exemples :</h4>
+<pre><code class="sql">CREATE TABLE artist(
+  artistid    INTEGER PRIMARY KEY, 
+  artistname  TEXT
+);
+CREATE UNIQUE INDEX artistname ON artist(artistname);
+CREATE TABLE track(
+  trackid     INTEGER, 
+  trackname   TEXT, 
+  trackartist INTEGER,
+  FOREIGN KEY(trackartist) REFERENCES artist(artistid)
+);
+</code></pre>
+
+## SQL, définition d'un schéma
+<h4>Schéma ?</h4>
+<ul>
+<li>Liste des tables, des variables
+<li>+ types 
+<li>Contraintes d'unicité
+<li>Primary key, Foreign key
+<li>Index
+</ul>
+</br>
+
+<h4>Normalisation</h4>
+<ul>
+<li>Éliminer les redondances
+<li>Décomposer les relations
+<li>1FN, 3FN,...
+</ul>
+</br>
+
+
+
+## <span class="green">Mettre sous forme normalisé une base stockant des informations sur des films (producteur, réalisateur, acteurs, budget, recette)</span> {data-background="#fff"}
+
+
+
+
+
+
+## Schéma et normalisation
+<h4>Correction</h4>
+<pre><code class="sql">CREATE TABLE realisateur(
+  realid    INTEGER PRIMARY KEY,
+  name      TEXT,
+  adresse   TEXT
+};
+CREATE TABLE producteur(
+  prodid    INTEGER PRIMARY KEY,
+  name      TEXT,
+  adresse   TEXT
+};
+CREATE TABLE acteurs(
+  acteurid  INTEGER PRIMARY KEY,
+  name      TEXT,
+  adresse   TEXT
+};
+</code></pre>
+
+
+
+## Schéma et normalisation
+<h4>Correction</h4>
+<pre><code class="sql">CREATE TABLE film(
+  filmid    INTEGER PRIMARY KEY, 
+  budget    INTEGER,
+  recette   INTEGER,
+  realid    INTEGER,
+  FOREIGN KEY(realid) REFERENCES realisateur(realid),
+  prodid    INTEGER,
+  FOREIGN KEY(prodid) REFERENCES producteur(prodid)
+);
+CREATE TABLE role(
+  filmid    INTEGER NOT NULL,
+  FOREIGN KEY(filmid) REFERENCES film(filmid),
+  acteurid  INTEGER NOT NULL,
+  FOREIGN KEY(acteurid) REFERENCES acteur(acteurid),
+  PRIMARY KEY(filmid,acteurid)
+);
+</code></pre>
+
+
+
+##  SQL, opérations C.R.U.D
+<ul>
+<li> Create : CREATE
+<li> Read : SELECT
+<li> <span class="red">Update : UPDATE</span>
+<li> <span class="red">Delete : DELETE</span>
+</ul>
+</br></br>
+<h4>Exemples</h4> 
+<pre><code class="sql">/* mise à jour */
+UPDATE artist SET artistname = 'unknown' WHERE artistname = ''
+/* suppression */
+DELETE FROM artist WHERE artistname = ''  
+</code></pre>
+
+
+
+## Package sqldf
+
+<ul>
+<li>Permet de se connecter à une base 
+<li>$\neq$ drivers
+<li>Retourne une data.frame
+</ul>
+&nbsp;
+</br></br>
+<h4>Exemples : </h4>
+```{r echo=TRUE,warning=FALSE}
+library(sqldf)
+# importer a partir d'un fichier
+routes = read.csv("./data/exo4.gtfs/routes.txt")
+sqldf("select route_id, route_desc from routes limit 5")
+```
+
+
+## <span class="green"> Importer les données du dossier ./data/exo4.gtfs </span> {data-background="#fff"}
+<span class="green">
+La structures des tables correpond à celle du format gtfs défini ici <a href="https://developers.google.com/transit/gtfs/">https://developers.google.com/transit/gtfs/</a>
+</span>
+
+## Importation des données ?
+<h4> importer a partir d'un fichier</h4>
+```{r echo=TRUE,warning=FALSE}
+routes = read.csv("./data/exo4.gtfs/routes.txt")
+agency = read.csv("./data/exo4.gtfs/agency.txt")
+calendar = read.csv("./data/exo4.gtfs/calendar.txt")
+stop_times = read.csv("./data/exo4.gtfs/stop_times.txt")
+stops = read.csv("./data/exo4.gtfs/stops.txt")
+trips = read.csv("./data/exo4.gtfs/trips.txt")
+```
+
+
+
+## <span class="green"> Combien de trips, routes et stops ? </span>{data-background="#fff"}
+
+
+## Combien de trips, routes et stops ?
+<h4>Correction</h4>
+Un simple count(*) :
+<pre><code class="sql">SELECT count(*) FROM trips</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+sqldf("select count(*) from trips")
+sqldf("select count(*) from routes")
+sqldf("select count(*) from stops")
+```
+
+## <span class="green"> Afficher les 5 premières lignes de la table stop_time ?</span>{data-background="#fff"}
+</section>
+
+## Afficher les 5 premières lignes de la table stop_time ?
+<h4>Correction</h4>
+Un simple select * avec un limit :
+<pre><code class="sql">SELECT * FROM stop_times LIMIT 5</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+sqldf("select trip_id,arrival_time from stop_times limit 5")
+```
+
+
+## <span class="green"> Combien d'arrêts dans chaque trips ?</span>{data-background="#fff"}
+
+
+## Combien d'arrêts dans chaque trips ?
+<h4>Correction</h4>
+Un count avec un group by :
+<pre><code class="sql">SELECT COUNT(*) AS nbstops, * FROM stop_times GROUP BY trip_id</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select count(*) as nbstops, trip_id from stop_times 
+  group by trip_id limit 5"
+sqldf(query)
+```
+
+
+## <span class="green"> Le trip avec le + de stops ?</span>{data-background="#fff"}
+</section>
+
+## Le trip avec le + de stops ?
+<h4>Correction</h4>
+Un count avec un group by :
+<pre><code class="sql">SELECT COUNT(*) AS nbstops, * 
+FROM stop_times 
+GROUP BY trip_id 
+ORDER BY nbstops 
+DESC LIMIT 1</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select count(*) as nbstops, * from stop_times 
+group by trip_id order by nbstops desc limit 1"
+sqldf(query)
+```
+
+
+
+
+## <span class="green">  Les routes avec + de 500 trips ?</span>{data-background="#fff"}
+
+
+## Les routes avec + de 500 trips ?
+<h4>Correction</h4>
+Un count avec un group by + distinct + jointure + having :
+<pre><code class="sql">SELECT COUNT(DISTINCT t.trip_id), t.route_id, r.route_long_name 
+FROM trips AS t, routes AS r 
+WHERE t.route_id=r.route_id 
+GROUP BY r.route_id 
+HAVING COUNT(DISTINCT t.trip_id)>500</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select count(distinct t.trip_id), t.route_id, r.route_long_name 
+from trips as t, routes as r 
+where t.route_id=r.route_id 
+group by r.route_id 
+having count(distinct t.trip_id)>500 limit 5"
+sqldf(query)
+```
+
+## <span class="green"> Le stop avec le + de trips ?</span>{data-background="#fff"}
+
+
+
+
+## Le stop avec le + de trips ?
+<h4>Correction</h4>
+Un count avec un group by + order by + limit :
+<pre><code class="sql">SELECT COUNT(*) AS nbtrips, stop_id
+FROM stop_times 
+GROUP BY stop_id 
+ORDER BY nbtrips DESC
+LIMIT 1</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select count(*) as nbtrips, stop_id
+from stop_times 
+group by stop_id 
+order by nbtrips desc
+limit 1"
+sqldf(query)
+```
+
+## <span class="green"> Le nombre de routes par stop ?</span>{data-background="#fff"}
+
+
+## Le nombre de routes par stop ?
+
+<h4>Correction</h4>
+Un count distinct avec un group by + jointures :
+<pre><code class="sql">SELECT COUNT(DISTINCT  ro.route_id) AS nbroutes, 
+st.stop_id, tr.trip_id 
+FROM stop_times AS st,trips AS tr,routes AS ro 
+WHERE st.trip_id=tr.trip_id AND tr.route_id=ro.route_id 
+GROUP BY stop_id</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select count(distinct  ro.route_id) as nbroutes, 
+st.stop_id, tr.trip_id 
+from stop_times as st,trips as tr,routes as ro 
+where st.trip_id=tr.trip_id and tr.route_id=ro.route_id 
+group by stop_id limit 5"
+sqldf(query)
+```
+
+
+
+
+## <span class="green">  Les stops avec le + de routes ? </br>(avec leur noms)</span>{data-background="#fff"}
+
+## Les stops avec le + de routes ? </br>(avec leur noms)
+<h4>Correction</h4>
+Un count distinct avec un group by + jointures :
+<pre><code class="sql">SELECT COUNT(DISTINCT  ro.route_id) AS nbroutes, 
+st.stop_id, stn.stop_name 
+FROM stops AS stn, stop_times AS st,trips AS tr,routes AS ro 
+WHERE st.stop_id=stn.stop_id AND st.trip_id=tr.trip_id 
+AND tr.route_id=ro.route_id 
+GROUP BY st.stop_id 
+ORDER BY nbroutes DESC LIMIT 1"</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select count(distinct  ro.route_id) as nbroutes, 
+st.stop_id, stn.stop_name 
+from stops as stn, stop_times as st,trips as tr,routes as ro 
+where st.stop_id=stn.stop_id and st.trip_id=tr.trip_id 
+and tr.route_id=ro.route_id 
+group by st.stop_id 
+order by nbroutes desc limit 1"
+sqldf(query)
+```
+
+## <span class="green"> L'heure du premier départ à chaque arrêt ?</span>{data-background="#fff"}
+
+
+## L'heure du premier départ à chaque arrêt ?
+<h4>Correction</h4>
+Une jointure + group by + min :
+<pre><code class="sql">SELECT st.stop_id, s.stop_name, MIN(st.departure_time) 
+FROM stop_times AS st, stops AS s 
+WHERE st.stop_id=s.stop_id 
+GROUP BY st.stop_id</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select st.stop_id, s.stop_name, min(st.departure_time) 
+from stop_times as st, stops as s 
+where st.stop_id=s.stop_id 
+group by st.stop_id limit 5"
+sqldf(query)
+```
+
+## <span class="green">  Les arrêts avec des bus la nuit entre 2h et 5h du matin ?</span>{data-background="#fff"}
+
+
+
+## Les arrêts avec des bus la nuit entre 2h et 5h du matin ?
+
+<h4>Correction</h4>
+Un jointure + conditions ou between + distinct :
+<pre><code class="sql">SELECT DISTINCT st.stop_id, s.stop_name, st.departure_time 
+FROM stop_times AS st, stops AS s 
+WHERE st.departure_time BETWEEN '02:00:00' AND '05:00:00' 
+AND s.stop_id=st.stop_id </code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select distinct st.stop_id, s.stop_name, st.departure_time 
+from stop_times as st, stops as s 
+where st.departure_time between '02:00:00' and '05:00:00' 
+and s.stop_id=st.stop_id limit 5"
+sqldf(query)
+```
+
+
+## <span class="green"> Lister les arrêts non accessibles aux handicapés ?</span>{data-background="#fff"}
+
+## Lister les arrêts non accessibles aux handicapés ?
+<h4>Correction</h4>
+Un requête simple sur la table stops :
+<pre><code class="sql">SELECT * FROM stops 
+WHERE wheelchair_boarding=2</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select stop_id, stop_name from stops 
+where wheelchair_boarding=2 limit 5"
+sqldf(query)
+```
+
+
+
+## <span class="green"> Calculer la durée des trips ?</span>{data-background="#fff"}
+
+
+## La durée des trips ?
+<h4>Correction</h4>
+strftime + min, max et group by : :
+<pre><code class="sql">SELECT trip_id, MIN(arrival_time), MAX(arrival_time), 
+MAX(STRFTIME('%s','2014-01-01 ' || arrival_time)) 
+- MIN(STRFTIME('%s','2014-01-01 ' || arrival_time)) as time 
+FROM stop_times GROUP BY trip_id 
+</code></pre>
+en R, en utilisant sqldf :
+```{r echo=TRUE,warning=FALSE}
+query="select trip_id, min(arrival_time), max(arrival_time), 
+max(strftime('%s','2014-01-01 ' || arrival_time))
+- min(strftime('%s','2014-01-01 ' || arrival_time)) as time 
+from stop_times group by trip_id 
+order by time desc limit 5"
+sqldf(query)
+```
+
+## <span class="green"> La fréquence moyenne </br>à la station 'Gayeulles Piscine' </br> le 23 Septembre 2014</span>{data-background="#fff"}
+<span class="green"> Vous pourrez utiliser un second traitement effectué en R</span>
+
+
+## La fréquence moyenne à la station 'Gayeulles Piscine' le 23 Septembre 2014
+<h4>Correction</h4>
+Recherche de tous les passages à la station le 23 Septembre, jointures multiples et conditions sur la table calendar :
+<pre><code class="sql">SELECT departure_time, 
+strftime('%s','2014-09-23' || arrival_time) AS depsec 
+FROM stop_times AS st, stops AS s, trips AS tr, calendar AS cal 
+WHERE s.stop_id=st.stop_id AND s.stop_name = 'Gayeulles Piscine' 
+AND tr.trip_id=st.trip_id AND tr.service_id=cal.service_id 
+AND cal.tuesday=1 
+AND cal.start_date<'20140923' AND cal.end_date>'20140923' 
+ORDER BY st.departure_time </code></pre>
+
+## La fréquence moyenne à la station 'Gayeulles Piscine' le 23 Septembre 2014
+<h4>Correction</h4>
+en R, en utilisant sqldf  + moyenne des différences :
+```{r echo=TRUE,warning=FALSE}
+query="select departure_time, 
+strftime('%s','2014-09-23' || arrival_time) as depsec 
+from stop_times as st, stops as s, trips as tr, calendar as cal 
+where s.stop_id=st.stop_id and s.stop_name = 'Gayeulles Piscine' 
+and tr.trip_id=st.trip_id and tr.service_id=cal.service_id 
+and cal.tuesday=1 and cal.start_date<'20140923' 
+and cal.end_date>'20140923' order by st.departure_time"
+# stockage de la requête dans la data.frame horaires
+horaires=sqldf(query)
+# calcul de la fréquence moyenne
+mean(diff(as.numeric(sort(horaires$depsec))))
+```
+

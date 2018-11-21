@@ -1,0 +1,441 @@
+---
+title: "Data Science, </br>Séance 1 : introduction"
+author: "Etienne Côme"
+date: "21 novembre 2018"
+output:
+  revealjs::revealjs_presentation:
+    theme: night
+    transition: none
+    self_contained: true
+    css: slides.css
+  beamer_presentation:
+    toc: false
+    incremental: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Data Science ?
+
+*The next sexy job*
+
+*The ability to take data to be able to understand it, to process 
+it, to extract value from it, to visualize it, to communicate it,
+that’s going to be a hugely important skill.*
+
+**-- Hal Varian, Google**
+
+## Data Science ?
+
+*Data science, as it's practiced, is a blend of Red-Bull-fueled 
+__hacking__ and espresso-inspired __statistics__.*
+
+*Data science is the civil engineering of data. Its acolytes 
+possess a practical knowledge of tools & materials, coupled 
+with a theoretical understanding of what's possible*
+
+**-- Mike Driscoll, CEO of metamarkets**
+
+
+
+## {data-background=#ffffff}
+<h1 style="color:#000">Drew Conway’s Data Science Venn Diagram </h1>
+<div style="text-align:center">
+<img src="./images/VennDiagram.png" height="500px">
+</div>
+
+
+## Data Science ?
+
+*A data scientist is someone who can obtain, scrub, explore, model 
+and interpret data, blending hacking, statistics and machine 
+learning. Data scientists not only are adept at working with data, but 
+appreciate data itself as a first-class product.*
+
+**-- Hilary Mason, chief scientist at bit.ly**
+
+## Data Science ?
+*Parler de la donnée, c'est aussi évoquer le datascientist, ce mouton à 5 pattes de la data disposant de compétences statistiques, informatiques, comprenant parfaitement les enjeux métier de l'entreprise... Est-il aussi un fantasme du discours ambiant sur le big data ?*
+
+*S'il peut exister des profils qui s'approchent de cette description, la réalité démontre le plus souvent que la datascience, comme la science en générale, ne se produit pas seule mais en groupe. La bonne question à se poser est donc plutôt celle de la synchronisation des différentes compétences au sein de l'organisation. Nous plaidons davantage pour un datascientism que pour des datascientists.*
+
+*Une autre réalité méconnue sur le datascientist est qu'il s'agit avant tout d'un métier d'artisan. Chaque problème et chaque jeu de données demande toujours une démarche spécifique qui n'est pas industrialisable, ce que beaucoup de gens ne comprennent pas encore.*
+
+
+
+## Une mode avec des origines anciennes 
+<div style="text-align:center"><img src="./images/640px-Johannes_Kepler_1610.jpg" height="500px"></br>
+<a href="http://fr.wikipedia.org/wiki/Johannes_Kepler">Johann Kepler</a></div>
+
+## Une mode avec des origines anciennes 
+<div style="text-align:center"><img src="./images/minardportrait.jpg" height="500px"></br>
+<a href="https://en.wikipedia.org/wiki/Charles_Joseph_Minard">Charles Joseph Minard</a></div>
+
+## Une mode avec des origines anciennes 
+<div style="text-align:center"><img src="./images/Minard.png" width="100%"></br>
+<a href="https://en.wikipedia.org/wiki/Charles_Joseph_Minard">Charles Joseph Minard</a></div>
+
+## Une mode avec des origines anciennes 
+<div style="text-align:center">
+<img src="./images/William_Sealy_Gosset.jpg" height="500px"></br>
+<a href="https://en.wikipedia.org/wiki/William_Sealy_Gosset">William Sealy Gosset (Student)</a></div>
+
+
+
+
+## Des compétences clés
+
+### 1. Préparer les données (DB) 
+Récupérer, mélanger, enrichir, filtrer, nettoyer, vérifier, formater, transformer des données...
+
+### 2. Mettre en œuvre une méthode un modèle (ML/Stats)
+Arbre de décision, régression, clustering, Modèle graphique, SVM...
+
+### 3. Interpréter les résultats (Vis) 
+Graphiques, Data visualisation, Cartes...
+
+## Des compétences clés
+### 1. Préparer les données (DB) -- 80% du boulot
+Récupérer, mélanger, enrichir, filtrer, nettoyer, vérifier, formater, transformer des données...
+
+### 2. Mettre en œuvre une méthode un model (ML/Stats)
+Arbre de décision, régression, clustering, Modèle graphique, SVM...
+
+### 3. Interpréter les résultats (Vis) -- 80% du boulot
+Graphiques, Data visualisation, Cartes...
+
+
+## Des compétences clés
+### 1. Data Munging 
+Récupérer, mélanger, enrichir, filtrer, nettoyer, vérifier, formater, transformer des données
+
+### 2. Statistiques 
+Analyse de données traditionnelle 
+
+### 3. Visualisation 
+Graphiques, Data visualisation, Cartes...
+
+
+
+## Plan du cours
+
+### <span class="blue">Data-munging  </span>
+<ul>
+<li>les fichiers textes csv, json, xml, ... et la ligne de commande</li>
+<li>base de donnée et algèbre relationnel 
+<li>trouver des données, et les manipuler en R</li>
+<li>manipuler des données en R avec dplyr  
+<li>api, web et scraping, ... </li>
+<li>données spatiale </li>
+</ul>
+
+
+### <span class="green">Visualisation </span>
+<ul>
+<li>introduction à la visualisation, bonnes pratiques & erreurs communes</li>
+<li>ggplot et la grammaire graphique </li>
+<li>introduction à la cartographie avec le package cartography</li>
+</ul>
+
+
+## {data-background="images/lbcbig.jpg"}
+
+<h1 style="color:#000">Quelques exemples de projets </h1>
+<h4 style="text-align:center" class="shadow"><a href="http://www.comeetie.fr/map_lbc.php">
+http://www.comeetie.fr/map_lbc.php</a></h4>
+
+
+
+## {data-background="images/francepixelsbig.jpg"}
+
+<h1 style="color:#000">Quelques exemples de projets </h1>
+<h4 style="text-align:center" class="shadow"><a href="http://www.comeetie.fr/galerie/francepixels/">
+http://www.comeetie.fr/galerie/francepixels/</a></h4>
+
+
+## {data-background="images/francepixelsbig.jpg"}
+<h1 style="color:#000">Quelques exemples de projets </h1>
+<h4 style="text-align:center" class="shadow"><a href="http://www.comeetie.fr/galerie/francepixels/">
+http://www.comeetie.fr/galerie/francepixels/</a></h4>
+
+## {data-background="#fff"}
+<h1 style="color:#000">Quelques exemples de projets </h1>
+<div style="text-align:center">
+<a href="http://vlsstats.ifsttar.fr/">
+<img src="images/vlsstatsiconbig.png" height="50%"></img>
+<h4 style="text-align:center">http://vlsstats.ifsttar.fr/</h4>
+</a>
+</div>
+
+## {data-background="#fff"}
+<h1 style="color:#000">Quelques exemples de projets </h1>
+<div style="text-align:center">
+<a href="http://vlsstats.ifsttar.fr/atNight/">
+<img src="images/atnightsmall.png" height="50%"></img>
+<h4 style="text-align:center">http://vlsstats.ifsttar.fr/atNight/</h4>
+</a>
+</div>
+
+## {data-background="#fff"}
+<h1 style="color:#000">Quelques exemples de projets </h1>
+<div style="text-align:center">
+<a href="http://www.comeetie.fr/galerie/velib/index.html">
+<img src="images/velibsmall.jpg" height="50%"></img>
+<h4 style="text-align:center">http://www.comeetie.fr/galerie/velib/</h4>
+</a>
+</div>
+
+## Organisation du cours
+### Cours orienté <span class="green">pratique et mise en œuvre</span>
+### Outils principaux : linux, R et Chrome
+### Exercices de mise en oeuvre pratique 
+### <span class="red"> + projet </span>
+### <span class="red"> + contrôle continu</span>
+
+
+
+## <span class="green">Projet, deezer playlists </span>
+- Données : [dépot git](https://github.com/comeetie/Deezerplay) 
+- Former des trinômes (semaine prochaine)
+- Définir un objectif
+- Rendu document Rmarkdown + présentation 
+- Date à définir durant la semaine banalisée
+
+## Quelques pointeurs
+<ul>
+<li>Dépot web du cours : 
+<li>Mon adresse mail : <a href="mailto:etienne.come@ifsttar.fr">etienne.come@ifsttar.fr</a>
+<li>Mon compte twitter : <a href="http://www.twitter.com/comeetie">@comeetie</a>
+<li>Outils en ligne : <a href="http://www.google.com">Google</a>,<a href="http://www.StackOverflow.com">StackOverflow</a>, <a href="http://www.github.com">gitHub</a>, <a href="http://www.github.io">github.io</a>
+<li>Cours intéressants : <a href="http://harvarddatascience.com/2013/02/20/introduction-to-computing-modeling-and-visualization-first-lectures-of-stat-221/">Stat221 (Harvard)</a>,
+<a href="http://vis.berkeley.edu/courses/cs294-10-sp11/wiki/index.php/CS294-10_Visualization">CS294-10 (Berkley)</a>
+<ul>
+
+
+## Reprise en douceur avec des fondamentaux 
+### fichiers textes et ligne de commande
+
+
+## <span class="purple">Fichiers textes</span>
+Formats très simples et pérenne pour stocker des données et les échanger</br>
+Exemples : 
+</br>
+<h4 class="green">CSV : Comma Separated Value</h4>
+<h4 class="red">XML : Extensible Markup Language</h4>
+<h4 class="blue">JSON : JavaScript Object Notation</h4>
+
+
+## <span class="green"> Les fichiers type csv </span>
+Fichier texte simple pour stocker des données tabulaire.</br>
+Les différentes variables sont séparées grâce à une 
+<h3 style="text-align:center">',' ou autre ';', '|', '#' et '\t'</h3>
+Possible de mettre une ligne pour le header
+<h4>Exemple</h4>
+<pre>
+"id" "mbikestands"
+16104 30.5303867403315
+15063 5.19337016574586
+17010 16.2651933701657
+13045 8.48066298342541
+10025 9.31491712707182
+...
+</pre>
+
+
+
+## <span style="font-size:1.5em;padding-top:2em" class="blue">Compétence : </br>Savoir importer un fichier malgré des problèmes d'encodage et/ou de formatage</span> {data-background="#fff"}
+
+
+## La ligne de commande
+
+<h4>obtenir de l'aide</h4>
+<a href="http://en.wikipedia.org/wiki/Man_(Unix)">man</a>
+<h4>rediriger les sorties</h4>
+<a href="http://fr.wikipedia.org/wiki/Interface_en_ligne_de_commande#Les_redirections_d.27entr.C3.A9es.2Fsorties"><, >, >>, ...</a>
+<h4>enchainer des commandes</h4>
+<a href="http://fr.wikipedia.org/wiki/Tube_(shell)">|</a> et <a href="http://fr.wikipedia.org/wiki/Bourne-Again_shell">script bash</a>
+<h4>afficher un fichier</h4>
+<a href="http://en.wikipedia.org/wiki/Head_(Unix)">head</a>, <a href="http://en.wikipedia.org/wiki/Tail_(Unix)">tail</a>, <a href="http://en.wikipedia.org/wiki/Cat_(Unix)">cat</a> et <a href="http://en.wikipedia.org/wiki/More_(Unix)">more</a>
+
+
+
+
+
+
+## La ligne de commande 
+<h4>analyser le fichier</h4>
+<a href="http://fr.wikipedia.org/wiki/Grep">grep</a> : global regular expression</br>
+Filtrer toute les lignes contenant 'tot'
+<pre><code class="c">grep tot fichier.txt</code></pre>
+Filtrer toute les lignes contenant un chiffre de 0 à 4 suivi d'un nombre quelconque de caractères et d'un chiffre de 5 à 9
+<pre><code class="c">grep '[01234].*[56789]' fichier.txt</code></pre>
+Filtrer toute les lignes commençant par un tirer
+<pre><code class="c">grep '^-' fichier.txt</code></pre>
+options -i, -n et -c,...
+
+
+## La ligne de commande
+<h4>éditer le fichier</h4>
+<a href="http://fr.wikipedia.org/wiki/GNU_nano">nano</a> et <a href="http://fr.wikipedia.org/wiki/GNU_gedit"> gedit</a>
+<h4>modifier, analyser le fichier</h4>
+<a href="http://fr.wikipedia.org/wiki/Stream_Editor">sed</a> : stream editor (lecture ligne/ligne)</br>
+remplacer toutes les occurrences de "ficheir" par "fichier" :
+<pre><code class="c">sed -e 's/ficheir/fichier/g' fichier.txt > fichier.corrected.txt</code></pre>
+supprimer toutes les lignes vides :
+<pre><code class="c">sed -e '/^ *$/d' fichier.txt</code></pre>
+supprimer les lignes 7 à 9 :
+<pre><code class="c">sed '7,9d' fichier.txt</code></pre>
+</section>
+
+
+
+## La ligne de commande
+<h4>modifier, analyser le fichier</h4>
+<a href="http://fr.wikipedia.org/wiki/Stream_Editor">perl</a> : practical extraction and reporting language</br>
+substitution multiples et mise en mémoire des pattern matchés:
+<pre><code class="c"> perl -pe 's/last_update":([0-9]*)}/last_update":0000$1}/g'</code></pre>
+</section>
+
+## La ligne de commande
+<h4>problème d'encodage</h4>
+<a href="http://en.wikipedia.org/wiki/Iconv">file</a> : informations sur un fichier</br>
+<pre><code class="c">file -i fichier.txt -o fichier.utf8</code></pre>
+<a href="http://en.wikipedia.org/wiki/Iconv">iconv</a> : changement d'encodage</br>
+iso-8859 &rarr; utf8
+<pre><code class="c">iconv -f ISO-8859-1 -t UTF-8 fichier.txt -o fichier.utf8</code></pre>
+</section>
+
+## Import en R de fichiers type csv
+<h4>problème de formatage et import dans R</h4>
+
+
+<pre><code class="R">data = read.table(...)</code></pre>
+
+<ul>
+<li>! au séparateur de champs
+<li>! à l'en-tête
+<li>! au conversion de chaîne de caractère en facteur
+<li>! au séparateurs décimaux : , ou .
+<li>! au séparateurs de chaîne de caractère " ou ' ?
+</ul>
+
+
+
+## <span class="green">Exercice (20 mn) :</span> {data-background="#fff"} 
+<h4><span class="green">Importer proprement dans R le fichier <a href="./data/exo1.csv">./data/exo1.csv</a> qui contient des problèmes d'encodage et de formatage avec read.table</span></h4>
+
+<h4><span class="green">Vérifier que les variables numériques sont bien numériques, que les chaines de caractères sont bien des chaines de caractères ....</span></h4>
+
+<h4><span class="green">Même chose avec read_csv de la library readr</span></h4>
+
+
+## <span class="blue" style="font-size:1.5em;padding-top:2em">Compétence : </br> Savoir lire et remettre en forme un fichier JSON en R</span> {data-background="#fff"} 
+
+
+## Package Rjson
+<h4>Lecture ecriture de JSON</h4>
+lire un fichier <a href="http://fr.wikipedia.org/wiki/JavaScript_Object_Notation">JSON</a> :
+<pre><code class="R"> data=fromJSON(file="fichier.json")</code> </pre>
+exporter un objet R en <a href="http://fr.wikipedia.org/wiki/JavaScript_Object_Notation">JSON</a> :
+<pre><code class="R"> toJSON(data)</code> </pre>
+manipuler :
+<pre><code class="R">apply(data,function(x){})
+unlist(list)</code></pre>
+</section>
+
+## <span class="green">Exercice (20mn): </span> {data-background="#fff"} 
+<span class="green">Créer la data.frame suivante : </span>
+<span style="color:#555"><pre>
+"id" "mbikestands"
+"1" 16104 30.5303867403315
+"2" 15063 5.19337016574586
+"3" 17010 16.2651933701657
+"4" 13045 8.48066298342541
+...
+</pre></span>
+<span class="green">qui contient les id des stations velib et la moyenne du nombre de bornes disponibles sur la période enregistrée.</br></br>
+Pour cela vous utiliserez le fichier <a href="./data/exo2.json">./data/exo2.json</a> qui à la forme suivante :</br></br>
+tableau de stations ayant chacune une id (id) et trois tableaux associés; nombre de vélos (available_bikes), nombre de bornes (available_bike_stands), date de la mesures (download_date)
+</span>
+
+
+## Les fichiers type XML
+<ul>
+<li>Fichier texte contenant des balises imbriquées
+<li>Chaque balise peut être décrite par différents attributs
+<li>Les balises et attributs devraient être décrit par une <i>dtd</i> et/ou des <i>namespaces</i>
+</ul>
+</br>
+<h4>Parser un fichiers</h4>
+2 méthodes :
+<ul>
+<li> SAX: api pour la lecture en ligne d'un document récupération d'évènements correspondant à la lecture d'une balise particulière
+<li> DOM: méthode de construction de l'arbre DOM du document
+</ul>
+
+## Exemple
+<pre><code class="xml">&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;stations lastUpdate="1409819465886" version="2.0"&gt;
+&lt;station&gt;
+	&lt;id&gt;2&lt;/id&gt;
+	&lt;name&gt;Dézery/Ste-Catherine&lt;/name&gt;
+	&lt;terminalName&gt;6002&lt;/terminalName&gt;
+	...
+&lt;/station&gt;
+&lt;station&gt;
+	&lt;id&gt;3&lt;/id&gt;
+	&lt;name&gt;St-Maurice/ St-Henri&lt;/name&gt;
+	&lt;terminalName&gt;6003&lt;/terminalName&gt;
+	...
+&lt;/station&gt;
+&lt;/stations&gt;
+</code>
+</pre>
+
+
+## Package XML
+<ul>
+<li>permet de parser un fichier et de construire un arbre DOM
+<li>fournis des fonctions pour parcourir et extraire les données de l'arbre créer
+</ul></br>
+<h4>Exemple d'utilisation</h4>
+<pre><code class="r">data   = xmlTreeParse("exo3.xml") # parser le fichier
+xmltop = xmlRoot(data) # recupérer la racine
+child  = xmlChildren(xmltop) # les fils
+child2 = xmlValue(child) # les valeurs
+val2   = xmlValue(child2)
+res1   = xmlSapply(xmltop,xmlValue) # appliquer une fonction
+</code>
+</pre>
+</section>
+
+
+## <span class="green">Exercice (20mn)</span> {data-background="#fff"} 
+
+<h4> <span class="green">Construire à partir du fichier <a href="../data/exo3.xml">./data/exo3.xml</a> une data.frame contenant les variables suivantes :</span></h4>
+<h4> <span class="green">
+'id','lat','long','nbBikes','nbEmptyDocks'</span>
+</h4>
+
+
+## Correction
+
+```{r, echo=TRUE}
+library(XML)
+data     = xmlTreeParse("./data/exo3.xml") # parser le fichier
+stations = xmlChildren(xmlRoot(data)) # liste des stations
+vars = c('id','lat','long','nbBikes','nbEmptyDocks')
+resMatrix=sapply(stations,function(x){
+  # extraction des variables
+  clist = lapply(xmlChildren(x),xmlValue) 
+  # sélection des variables 
+  sel   = names(clist) %in% vars
+  # et conversion des variables
+  as.numeric(unlist(clist[sel])) 
+  })
+# mise sous forme de data.frame
+res=data.frame(t(resMatrix),row.names = NULL)
+names(res)=c('id','lat','long','nbBikes','nbEmptyDocks')
+```
