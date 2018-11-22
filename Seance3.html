@@ -1128,24 +1128,26 @@ GROUP BY stop_id</code></pre>
 Correction
 </h4>
 Un count distinct avec un group by + jointures :
-<pre><code class="sql">SELECT COUNT(DISTINCT  ro.route_id) AS nbroutes, 
+<pre><code class="sql">SELECT COUNT(DISTINCT  tr.route_id) AS nbroutes, 
 st.stop_id, stn.stop_name 
-FROM stops AS stn, stop_times AS st,trips AS tr,routes AS ro 
+FROM stops AS stn, stop_times AS st,trips AS tr 
 WHERE st.stop_id=stn.stop_id AND st.trip_id=tr.trip_id 
-AND tr.route_id=ro.route_id 
 GROUP BY st.stop_id 
-ORDER BY nbroutes DESC LIMIT 1&quot;</code></pre>
+ORDER BY nbroutes DESC LIMIT 5&quot;</code></pre>
 <p>en R, en utilisant sqldf :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query=<span class="st">&quot;select count(distinct  ro.route_id) as nbroutes, </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query=<span class="st">&quot;select count(distinct  tr.route_id) as nbroutes, </span>
 <span class="st">st.stop_id, stn.stop_name </span>
-<span class="st">from stops as stn, stop_times as st,trips as tr,routes as ro </span>
+<span class="st">from stops as stn, stop_times as st,trips as tr </span>
 <span class="st">where st.stop_id=stn.stop_id and st.trip_id=tr.trip_id </span>
-<span class="st">and tr.route_id=ro.route_id </span>
 <span class="st">group by st.stop_id </span>
-<span class="st">order by nbroutes desc limit 1&quot;</span>
+<span class="st">order by nbroutes desc limit 5&quot;</span>
 <span class="kw">sqldf</span>(query)</code></pre></div>
-<pre><code>##   nbroutes stop_id   stop_name
-## 1       12    1610 Tournebride</code></pre>
+<pre><code>##   nbroutes stop_id    stop_name
+## 1       12    1610  Tournebride
+## 2       10    1160  Tournebride
+## 3        8    1007   Assomption
+## 4        8    1011 Fac de Droit
+## 5        8    1033   Assomption</code></pre>
 </section>
 <section id="lheure-du-premier-depart-a-chaque-arret" class="slide level2" data-background="#fff">
 <h2><span class="green"> L’heure du premier départ à chaque arrêt ?</span></h2>
@@ -1237,8 +1239,8 @@ FROM stop_times GROUP BY trip_id
 </code></pre>
 <p>en R, en utilisant sqldf :</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">query=<span class="st">&quot;select trip_id, min(arrival_time), max(arrival_time), </span>
-<span class="st">max(strftime('%s','2014-01-01 ' || arrival_time))</span>
-<span class="st">- min(strftime('%s','2014-01-01 ' || arrival_time)) as time </span>
+<span class="st">max(strftime('%s',arrival_time))</span>
+<span class="st">- min(strftime('%s', arrival_time)) as time </span>
 <span class="st">from stop_times group by trip_id </span>
 <span class="st">order by time desc limit 5&quot;</span>
 <span class="kw">sqldf</span>(query)</code></pre></div>

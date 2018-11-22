@@ -413,7 +413,7 @@ res1   = xmlSapply(xmltop,xmlValue) # appliquer une fonction
 
 ## <span class="green">Exercice (20mn)</span> {data-background="#fff"} 
 
-<h4> <span class="green">Construire à partir du fichier <a href="../data/exo3.xml">./data/exo3.xml</a> une data.frame contenant les variables suivantes :</span></h4>
+<h4> <span class="green">Construire à partir du fichier <a href="./data/exo3.xml">./data/exo3.xml</a> une data.frame contenant les variables suivantes :</span></h4>
 <h4> <span class="green">
 'id','lat','long','nbBikes','nbEmptyDocks'</span>
 </h4>
