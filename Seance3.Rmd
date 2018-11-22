@@ -475,15 +475,15 @@ sqldf(query)
 Un count distinct avec un group by + jointures :
 <pre><code class="sql">SELECT COUNT(DISTINCT  ro.route_id) AS nbroutes, 
 st.stop_id, tr.trip_id 
-FROM stop_times AS st,trips AS tr,routes AS ro 
-WHERE st.trip_id=tr.trip_id AND tr.route_id=ro.route_id 
+FROM stop_times AS st,trips AS tr 
+WHERE st.trip_id=tr.trip_id 
 GROUP BY stop_id</code></pre>
 en R, en utilisant sqldf :
 ```{r echo=TRUE,warning=FALSE}
-query="select count(distinct  ro.route_id) as nbroutes, 
+query="select count(distinct  tr.route_id) as nbroutes, 
 st.stop_id, tr.trip_id 
-from stop_times as st,trips as tr,routes as ro 
-where st.trip_id=tr.trip_id and tr.route_id=ro.route_id 
+from stop_times as st,trips as tr 
+where st.trip_id=tr.trip_id 
 group by stop_id limit 5"
 sqldf(query)
 ```
