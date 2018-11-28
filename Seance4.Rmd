@@ -1,0 +1,378 @@
+---
+title: "Data Science, </br>Séance 4 : Données sur le web + scrapping et API"
+author: "Etienne Côme"
+date: "21 novembre 2018"
+output:
+  revealjs::revealjs_presentation:
+    theme: night
+    transition: none
+    self_contained: true
+    css: slides.css
+  beamer_presentation:
+    toc: false
+    incremental: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## <span class="green">Où trouver des données sur le web</span>
+<ul>
+<li>instituts publics : <a href="http://www.insee.fr">insee</a>, <a href="http://professionnels.ign.fr/catalogue">ign</a>, ...
+<li>portails open-data : <a href="http://data.iledefrance.fr"> data.iledefrance.fr</a>, <a href="http://data.gouv.fr">data.gouv.fr</a>, ...
+<li>sites collaboratifs : <a href="http://fr.dbpedia.org/">wikipedia (dbpedia)</a>, <a href="http://download.geofabrik.de/">openstreetmap</a>, ...
+<li>sites specialisés : <a href="http://french.wunderground.com/history/airport/LFPO/2014/9/10/DailyHistory.html?">météo</a>, <a href="http://www.footballstats.fr/">sports</a>, <a href="http://www.meilleursagents.com/api/geo2/get_idf_pricemap_info?x=2.32&y=48.67&z=10">logement</a>, <a href="http://www.leboncoin.fr">annonces</a>, ...
+<li>réseaux sociaux : <a href="https://dev.twitter.com/rest/public">twitter</a>, <a href="https://www.flickr.com/services/api/">flickR</a>, <a href="http://gnip.com/sources/foursquare/">foursquare</a>, ... 
+<li>moteur de recherche : <a href="https://developers.google.com/apis-explorer/#p/">google</a>, <a href="https://developer.yahoo.com/everything.html">yahoo</a>, <a href="http://www.bing.com/dev/en-us/dev-center">bing</a>, ... 
+<li>api spécialisées : <a href="http://developpers.jcdecaux.fr">velib</a>, ...
+
+</ul>
+
+## <span class="green">Où trouver des données sur le web</span>
+
+<h4 class="red"> Jeux de données, déjà mis en forme</h4>
+<ul>
+<li>instituts publics : <a href="http://www.insee.fr">insee</a>, <a href="http://professionnels.ign.fr/catalogue">ign</a>, ...
+<li>portails open-data : <a href="http://data.iledefrance.fr"> data.iledefrance.fr</a>, <a href="http://data.gouv.fr">data.gouv.fr</a>, ...
+<li>sites collaboratifs : <a href="http://fr.dbpedia.org/">wikipedia (dbpedia)</a>, <a href="http://download.geofabrik.de/">openstreetmap</a></ul>
+
+## <span class="green">Où trouver des données sur le web</span>
+<h4 class="red"> Jeux de données à mettre en forme</h4>
+<h4 class="green">Scrapping </h4>
+<ul>
+<li>sites specialisés : <a href="http://french.wunderground.com/history/airport/LFPO/2014/9/10/DailyHistory.html?">météo</a>, <a href="">sports</a>, <a href="http://www.meilleursagents.com/api/geo2/get_idf_pricemap_info?x=2.32&y=48.67&z=10">logement</a>, <a href="http://www.leboncoin.fr">annonces</a>, ...
+</ul>
+
+<h4 class="green">API</h4>
+<ul>
+<li>sites collaboratifs : <a href="http://overpass-api.de/">openstreetmap</a>, ...
+<li>réseaux sociaux : <a href="https://dev.twitter.com/rest/public">twitter</a>, <a href="https://www.flickr.com/services/api/">flickR</a>, <a href="http://gnip.com/sources/foursquare/">foursquare</a>, ... 
+<li>moteur de recherche : <a href="https://developers.google.com/apis-explorer/#p/">google</a>, <a href="https://developer.yahoo.com/everything.html">yahoo</a>, <a href="http://www.bing.com/dev/en-us/dev-center">bing</a>, ... 
+<li>api spécialisées : <a href="http://developpers.jcdecaux.fr">velib</a>, ...
+</ul>
+
+## Scrapping
+<h4 class="purple">Extraire des informations spécifiques</h4>
+<h4 class="purple">d'une ou plusieurs pages web</h4>
+<h4 class="purple">en vu de constituer un jeu de données</h4>
+
+## <span class="purple">Scrapping, le html </span>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;section style=&quot;padding-top:6em;text-align:center&quot;&gt;
+&lt;h1 class=&quot;purple&quot;&gt; Scrapping &lt;/h1&gt;
+&lt;h4 class=&quot;purple&quot;&gt;Extraire des informations spécifiques&lt;/h4&gt;
+&lt;h4 class=&quot;purple&quot;&gt;d'une ou plusieurs pages web&lt;/h4&gt;
+&lt;h4 class=&quot;purple&quot;&gt;en vu de constituer un jeu de donn&#233;es&lt;/h4&gt;
+&lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></code>
+
+
+## Scrapping, les package RCurl et XML 
+<h4>RCurl (Client URL Request Library)</h4>
+le web en ligne de commande : <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">get, post</a>, <a href="http://fr.wikipedia.org/wiki/HyperText_Transfer_Protocol_Secure">https</a>, <a href="http://fr.wikipedia.org/wiki/File_Transfer_Protocol">ftp</a>, ...
+<pre><code class="r">library(RCurl)
+# récupérer la page  
+res  = getURL("http://www...")
+</pre></code>
+<h4>XML</h4>
+htmlTreeParse, getNodeSet :
+<pre><code class="r"># parse du html
+resp  = htmlTreeParse(res,useInternal=T)
+# fonction de haut niveau pour récupérer les tableaux 
+rest  = readHTMLTable(resp)
+# récupérer un noeud désiré (xpath)
+node  = getNodeSet(resp, '//nav/ul/')
+</pre></code>
+
+
+
+##  Scrapping, les package RCurl et XML 
+<h4>Xpath, extraire des informations d'un arbre DOM</h4>
+Syntaxe pour se promener dans l'abre dom et en extraire des partie (noeuds, attributs, ...), plus détails sur <a href="http://www.w3schools.com/xpath/xpath_syntax.asp">w3schools</a>.</br>
+
+| Expression                      | Description                                                                           |
+|:--------------------------------|:-------------------------------------------------------------------------------------:|
+| <i>nodename  </i>               | Selects all nodes with the name "<i>nodename</i>"                                     |
+|/                                | Selects from the root node                                                            | 
+|//                               | Selects nodes in the document from the current node that match the selection          |
+|.                                | Selects the current node                                                              |
+|..                               | Selects the parent of the current node                                                |
+| @                               | Selects attributes                                                                    |
+
+## Scrapping, les package RCurl et XML 
+<h4>Xpath, extraire des informations d'un arbre DOM</h4>
+Syntaxe pour se promener dans l'abre dom et en extraire des partie (noeuds, attributs, ...), plus détails sur <a href="http://www.w3schools.com/xpath/xpath_syntax.asp">w3schools</a>.</br>
+
+| Expression                      | Description                                                                           |
+|:--------------------------------|:-------------------------------------------------------------------------------------:|
+|/bookstore/book[1]               | Selects the first book element that is the child of the bookstore element.            |
+|//title[@lang]                   | Selects all the title elements that have an attribute named                           |
+|//title[@lang='en']              | Selects all the title elements that have an attribute named lang with a value of 'en' |
+|/bookstore/book[price&gt;35.00]  | Selects all the book elements of the bookstore element that have a price > 35.00      |
+
+
+
+## Library
+```{r, echo=TRUE,results='hide',fig.show='hide',warning=FALSE}
+library(XML)
+library(RCurl)
+library(dplyr)
+library(rjson)
+library(httr)
+```
+
+
+
+
+## <span class="green">Scrapper stackoverflow.com</span>
+<p class="green">Ecrire un script R permettant de scrapper le nombre de question publier sur les sites ayant les tags :
+<b>'python','julia-lang','r','sas','matlab','ggplot2' et 'd3.js'</b>. Réaliser un graphique à partir de ces données.
+</p>
+<a href="http://stackoverflow.com/questions/tagged/python"><img src="./images/stackoverflow.png" width="900px"></a>
+
+
+##
+```{r, echo=TRUE,results='hide',fig.show='hide',out.height="8"}
+# definition des termes à scrapper 
+languages=c('python','julia-lang','r','sas','matlab','ggplot2')
+# initialisation de la table
+stackOF=data.frame(lang=languages,questions=NA)
+# boucle sur les termes
+for(i in 1:length(languages)){
+  # récupérer la page
+  base = "https://stackoverflow.com/questions/tagged/"
+  res  = getURL(paste(base,stackOF[i,'lang'],sep=''))
+  # la parser et récupérer le noeud désiré (xpath)
+  resp = htmlTreeParse(res,useInternal=T)
+  ns1  = getNodeSet(resp, "//*[@id='mainbar']/div[4]/div[1]")  
+  # récupérer la valeure et la nettoyer
+  val  = xmlValue(ns1[[1]])
+  valclean =  gsub("questions","",val);
+  valclean = gsub("[ ,\n,\r]","",valclean)
+  stackOF[i,'questions'] = as.numeric(valclean)
+}
+# faire un graphique
+stackOF=stackOF[order(stackOF$questions,decreasing=T),]
+```
+
+## 
+```{r, echo=TRUE,fig.show='hide'}
+date = format(Sys.time(), "%d/%m/%Y")
+title=paste("Popularité sur stackOverFlow",date)
+barplot(stackOF$questions,
+        names.arg=stackOF$lang,
+        main=title,ylab="Nombre de questions")
+```
+
+## <span class="green">Scrapper stackOverFlow</span> {data-background=#ffffff}
+```{r, echo=FALSE}
+date = format(Sys.time(), "%d/%m/%Y")
+title=paste("Popularité sur stackOverFlow",date)
+barplot(stackOF$questions,
+        names.arg=stackOF$lang,
+        main=title,ylab="Nombre de questions")
+```
+
+## <span class="green">Scrapper leboncoin.fr</span>
+<p>Ecrire un script R permettant de scrapper le nombre d'annonce de particulier du site dans la catégorie "Jardinage" en région centre.
+</p>
+<a href="https://www.leboncoin.fr/jardinage/offres/centre/"><img src="./images/leboncoin.png" height="80%"></a>
+
+
+## <span class="green">Scrapper leboncoin.fr</span>
+
+
+```{r, echo=TRUE,results='hide',fig.show='hide',warning=FALSE}
+getURL_FA <- function(url){
+  result=GET(url,
+             add_headers(
+"User-Agent" = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0",
+"Accept"="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+"Accept-Language"="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"))
+  return(result)
+}
+```
+
+
+## <span class="green">Scrapper leboncoin.fr</span>
+```{r, echo=TRUE,warning=FALSE}
+# récupérer la page 
+res  = getURL_FA("https://www.leboncoin.fr/jardinage/offres/centre/")
+# la parser
+resp = htmlTreeParse(res,useInternal=T)
+# récupérer le noeud désiré (xpath)
+node = getNodeSet(resp, '//label[@for="result_part"]/span/span')
+# récupérer la valeure, supprimer l'espace et convertir en numérique  
+val  = as.numeric(gsub(" ","",xmlValue(node[[1]])))
+val
+```
+Finaliser pour récupérer les valeurs pour 4 régions et 4 catégories.
+
+
+
+## <span class="green">Scrapper les résultats de ligue 1 </span>
+<h4 class="green">Récupérer les dix dernières années de résultats du championnat de france</span>
+
+
+
+## Scrapper les résultats de ligue 1 
+
+```{r, echo=TRUE}
+# récupérer la page et la parser
+year = 2018
+url_b ="http://www.footballstats.fr/resultat-ligue1-"
+res  = getURL(paste(url_b,year,".html",sep=''))
+resp = htmlTreeParse(res,useInternal=T)
+# récupérer le bon tableau de la page
+rest = readHTMLTable(resp)[[2]]
+```
+
+## Scrapper les résultats de ligue 1 
+
+```{r, echo=TRUE}
+# le remettre légèrement en forme
+rest = rest[!is.na(rest[,2]),1:4]
+names(rest) = c('locaux', 'visiteur','resultat','affluence')
+rest$locaux=factor(as.character(rest$locaux),
+                   levels=unique(rest$locaux))
+rest$affluence=as.numeric(as.character(rest$affluence))
+rest$visiteurs=factor(as.character(rest$visiteur),
+                      levels=unique(rest$locaux))
+resm=matrix(unlist(strsplit(as.character(rest$resultat),'-')),2)
+rest$resultat.locaux=as.numeric(resm[1,])
+rest$resultat.visiteurs=as.numeric(resm[2,])
+```
+
+
+## Scrapper les résultats de ligue 1
+```{r, echo=TRUE,warning=FALSE,fig.show='hide'}
+# remise en forme et calcul des totaux de buts marqués / encaissés
+resdom = rest  %>% group_by(locaux) %>% 
+  summarise(Abutdom=sum(resultat.locaux),
+            Dbutdom=sum(resultat.visiteurs),
+            affdom=mean(affluence,na.rm=TRUE))
+
+resext = rest  %>% group_by(visiteur) %>% 
+  summarise(Abutext=sum(resultat.visiteurs),
+            Dbutext=sum(resultat.locaux),
+            affext=mean(affluence,na.rm=TRUE))
+
+res = resdom %>% left_join(resext,by=c("locaux"="visiteur")) %>% 
+  mutate(D=Dbutdom+Dbutext,A=Abutdom+Abutext)
+```
+## Scrapper les résultats de ligue 1
+```{r, echo=TRUE,warning=FALSE,fig.show='hide'}
+# faire un graphique
+ti = paste("Ligue 1, Saison",year)
+xl = "Buts marqués"
+yl = "Buts encaissés"
+plot(res$A,res$D,xlab=xl,ylab=yl,col="white",main=ti)
+text(res$A,res$D,res$locaux,cex=res$affdom/20000)
+```
+
+
+
+## <span class="green">Scrapper les résultats de ligue 1 </span>{data-background=#ffffff}
+```{r, echo=FALSE,warning=FALSE,fig.keep='last'}
+plot(res$A,res$D,xlab=xl,ylab=yl,col="white",main=ti)
+text(res$A,res$D,res$locaux,cex=res$affdom/20000)
+```
+
+
+
+##
+<span class="red"><h1> API</br>
+Application Programming Interface</h1></span>
+
+
+## <span class="green">Vélib' et altitude des stations</span>
+Utiliser les fichiers <a href="http://vlsstats.ifsttar.fr/data/input_Lyon.json">http://vlsstats.ifsttar.fr/data/input_Lyon.json</a> et <a href="http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Paris.json">http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Paris.json</a> ainsi que <a href="https://elevation-api.io/">l'api elevation-api.io </a> pour calculer un indicateur de charge moyenne des stations Vélib' et mettre celui-ci en relation avec l'altitude des stations.
+
+
+
+
+## <span class="green">Vélib' et altitude des stations</span>
+
+Localisation des stations
+```{r, echo=TRUE,warning=FALSE}
+# récupérer la liste des stations et la mettre en forme
+url="http://vlsstats.ifsttar.fr/data/input_Lyon.json"
+stationsList=fromJSON(file=url)
+data=sapply(stationsList,function(x){
+	c(x$number,x$name,x$address,
+	  x$bike_stands,x$position$lat,x$position$lng)
+	})
+stations=data.frame(id=as.numeric(data[1,]),name=data[2,],
+        adresse=data[3,],	nbdocks=as.numeric(data[4,]),
+        lat=as.numeric(data[5,]),long=as.numeric(data[6,]),alt=NA)
+```
+
+## <span class="green">Vélib' et altitude des stations</span>
+
+API elevation
+```{r, echo=TRUE,warning=FALSE,cache=TRUE,results='hide'}
+chunk_size = 10
+# récupérer les altitudes
+base  = "https://elevation-api.io/api/elevation?points="
+for (i in 1:ceiling(nrow(stations)/chunk_size)){
+system("sleep 0.5")
+print(i)
+iv   = ((i-1)*chunk_size+1):min((i*chunk_size),dim(stations)[1])
+latlong = paste0("(",stations[iv,'lat'],",",stations[iv,'long'],")")
+query = paste(latlong,collapse=',')
+url   = paste(base,query,sep="")
+res   = fromJSON(getURL(url))
+stations$alt[iv]=sapply(res$elevations,function(x){x$elevation})
+}
+```
+
+## <span class="green">Vélib' et altitude des stations</span> 
+```{r, echo=TRUE,warning=FALSE,comment=FALSE,cache=TRUE,fig.show='hide'}
+# calculer l'indice de charge moyenne
+url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
+stationsData = fromJSON(file=url)
+res = sapply(stationsData,function(x){
+  c(x$'_id', mean(x$available_bikes))})
+res = data.frame(t(res),row.names = NULL)
+names(res) = c('id','mnbikes')
+stations =  stations%>% left_join(res)
+stations$loading = stations$mnbikes/stations$nbdocks
+ti = "Effet de l'altitude sur la charge des stations"
+yl = "Indicateur de charge moyenne"
+xl = "Altitude (m)"
+plot(stations$alt,stations$loading,xlab=xl,ylab=yl,main=ti)
+```
+
+
+
+## <span class="green">Vélib' et altitude des stations</span> {data-background="#ffffff"}
+```{r, echo=FALSE,warning=FALSE,comment=FALSE,cache=TRUE,message=FALSE}
+# calculer l'indice de charge moyenne
+url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
+stationsData = fromJSON(file=url)
+res = sapply(stationsData,function(x){
+  c(x$'_id', mean(x$available_bikes))})
+res = data.frame(t(res),row.names = NULL)
+names(res) = c('id','mnbikes')
+stations =  stations%>% left_join(res)
+stations$loading = stations$mnbikes/stations$nbdocks
+ti = "Effet de l'altitude sur la charge des stations"
+yl = "Indicateur de charge moyenne"
+xl = "Altitude (m)"
+plot(stations$alt,stations$loading,xlab=xl,ylab=yl,main=ti)
+```
+
+
+## API suite
+
+<p>Ecrire une fonction permettant de récupérer le nombre de fan d'un artiste en utilisant l'api deezer.</p>
+
+<p>vous vous servirez de la fonction <a href="https://developers.deezer.com/api/search">search</a> et de la fonction <a href="https://developers.deezer.com/api/search">artist</a> de cette API. </p>
+
+
+
