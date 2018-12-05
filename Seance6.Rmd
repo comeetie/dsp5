@@ -1,0 +1,165 @@
+---
+title: "Data Science, </br>Séance 6 : Données spatiales"
+author: "Etienne Côme"
+date: "21 novembre 2018"
+output:
+  revealjs::revealjs_presentation:
+    theme: night
+    transition: none
+    self_contained: true
+    css: slides.css
+  beamer_presentation:
+    toc: false
+    incremental: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+
+## Packages historique
+
+
+
+* `rgdal`: interface entre R and [GDAL](http://www.gdal.org/) (Geospatial Data Abstraction Library) and [PROJ4](https://github.com/OSGeo/proj.4) librarie: raster / vector 
+
+* `sp`: classes d'objets spatiaux pour R. (S4)
+
+* `rgeos`: interface entre R et [GEOS](http://trac.osgeo.org/geos/) (Geometry Engine - Open Source) library: area, perimeter, distances, dissolve, buffer, overlap, union, contains... 
+
+
+Toujours utilisé
+
+## Simple Features for R
+
+* `sf`  Website: [Simple Features for R](https://r-spatial.github.io/sf/index.html)
+
+* First release:  October 20, 2016  
+
+* `sp`, `rgeos` and `rgdal` tout dans le même package 
+
+* Plus simple
+
+* [Tidy data](http://vita.had.co.nz/papers/tidy-data.html): compatible `dplyr` et autre `tidyverse` 
+
+*  Edzer Pebesma (also `sp` author)
+
+</br>
+## Simple Features for R
+**sf objects data structure:**
+
+<img src="images/sf.png" alt="format sf" width="800">
+
+
+
+## Lire des données
+```{r,echo=TRUE,warning=FALSE}
+library(sf)
+mtq <- st_read("data/mtq/martinique.shp")
+```
+
+
+## Changer la projection ou passer en lat/long
+```{r,echo=TRUE,warning=FALSE}
+mtq_rp = st_transform(mtq,4326)
+mtq_rp
+```
+
+
+## Affichage
+
+```{r,echo=TRUE,warning=FALSE}
+plot(mtq)
+```
+
+## Affichage
+Seulement la géométrie
+```{r, echo=TRUE,warning=FALSE}
+plot(st_geometry(mtq))
+```
+
+
+## Centroids 
+```{r, echo=TRUE,warning=FALSE,message=FALSE,fig.show='last'}
+mtq_c <- st_centroid(mtq)
+plot(st_geometry(mtq))
+plot(st_geometry(mtq_c), add=TRUE, cex=1.2, col="red", pch=20)
+```
+
+## Distances
+```{r, echo=TRUE,warning=FALSE,message=FALSE}
+mat <- st_distance(x=mtq_c,y=mtq_c)
+mat[1:5,1:5]
+```
+
+## Polygons Aggregation 
+
+Union :
+```{r, echo=TRUE,warning=FALSE,message=FALSE,fig.show='last'}
+mtq_u <- st_union(mtq)
+plot(st_geometry(mtq), col="lightblue")
+plot(st_geometry(mtq_u), add=T, lwd=2, border = "red")
+```
+
+## Polygons Aggregation 
+avec une variable de groupe :
+```{r, echo=TRUE,warning=FALSE,message=FALSE,fig.show='last'}
+library(dplyr)
+mtq_u2 <- mtq %>% 
+  group_by(STATUT) %>% 
+  summarize(P13_POP=sum(P13_POP))
+plot(st_geometry(mtq), col="lightblue")
+plot(st_geometry(mtq_u2), add=T, lwd=2, border = "red", col=NA)
+```
+
+## Buffer 
+```{r, echo=TRUE,warning=FALSE,message=FALSE,fig.show='last'}
+mtq_b <- st_buffer(x = mtq_u, dist = 5000)
+plot(st_geometry(mtq), col="lightblue")
+plot(st_geometry(mtq_u), add=T, lwd=2)
+plot(st_geometry(mtq_b), add=T, lwd=2, border = "red")
+
+```
+
+
+## Polygon Intersection 
+```{r, echo=TRUE,warning=FALSE,message=FALSE,fig.show='last'}
+m <- rbind(c(700015,1624212), c(700015,1641586), c(719127,1641586), 
+           c(719127,1624212), c(700015,1624212))
+p <- st_sf(st_sfc(st_polygon(list(m))), crs = st_crs(mtq))
+plot(st_geometry(mtq))
+plot(p, border="red", lwd=2, add=T)
+```
+
+## Polygon Intersection 
+```{r, echo=TRUE,warning=FALSE,message=FALSE,fig.show='last'}
+mtq_z <- st_intersection(x = mtq, y = p)
+plot(st_geometry(mtq))
+plot(st_geometry(mtq_z), col="red", border="green", add=T)
+```
+
+
+## Voronoi Polygons  
+<small>google: "st_voronoi R sf" (https://github.com/r-spatial/sf/issues/474 & https://stackoverflow.com/questions/45719790/create-voronoi-polygon-with-simple-feature-in-r)
+</small>
+```{r, echo=TRUE,warning=FALSE,message=FALSE,fig.show='last'}
+mtq_v <- st_voronoi(x = st_union(mtq_c))
+mtq_v <- st_intersection(st_cast(mtq_v), st_union(mtq))
+mtq_v <- st_join(x = st_sf(mtq_v), y = mtq_c, join=st_intersects)
+mtq_v <- st_cast(mtq_v, "MULTIPOLYGON")
+plot(st_geometry(mtq_v), col='lightblue')
+```
+
+## Exercice
+<p>Charger les contours des départements français contenus dans le répertoire exo6_dep</p>
+<p>Calculer à partir des données communales contenues dans le fichier exo6_data.csv des taux de naissances par départements.</p>
+<p>Joindre les deux tables et vérifier ques des données sont associés à chaque départements.</p>
+
+## Sources
+
+<ul>
+<li>
+<li>
