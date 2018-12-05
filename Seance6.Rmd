@@ -157,9 +157,13 @@ plot(st_geometry(mtq_v), col='lightblue')
 <p>Charger les contours des départements français contenus dans le répertoire exo6_dep</p>
 <p>Calculer à partir des données communales contenues dans le fichier exo6_data.csv des taux de naissances par départements.</p>
 <p>Joindre les deux tables et vérifier ques des données sont associés à chaque départements.</p>
+<p>Exporter les données en geojson</p>
+
+## Exercice
+<p>Calculer et afficher les voronois associés aux stations velib de new-york.</p>
 
 ## Sources
 
 <ul>
-<li>
-<li>
+<li> Thimothé Giraud / Kim antunez
+</ul>
