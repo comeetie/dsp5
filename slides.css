@@ -48,3 +48,12 @@
   color: #fd8d3c;
 }
 
+.reveal section img{
+  border: 0px;
+  box-shadow:none;
+  
+}
+
+.leaflet-popup-content{
+  font-size:12px;
+}

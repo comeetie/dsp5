@@ -1,0 +1,25 @@
+---
+title: "ListeProjet"
+author: "Etienne Côme"
+date: "6 décembre 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Projet data-science M2 IM Paris 5 2018-2019
+
+- Togola Habidatou, Diawara Yakhla, Bonromdhane Laila
+
+- Aznag Kawtar, Rekmadi Faiza
+
+- Torelino Christelle, Cottin Aziliz
+
+- Lefevre Wendy, Bouterfa Neila, Dinh Thomas
+
+- Cohen Dan, Bonan Dan
+
+- Dutueil Benjamin, Mollandin Fanny
+
