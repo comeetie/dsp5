@@ -11,15 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Projet data-science M2 IM Paris 5 2018-2019
 
-- Togola Habidatou, Diawara Yakhla, Bonromdhane Laila
+Soutenance cuneo C 7 janvier 2019 10h
 
-- Aznag Kawtar, Rekmadi Faiza
+- Togola Habidatou, Diawara Yakhla, Bonromdhane Laila 10h
 
-- Torelino Christelle, Cottin Aziliz
 
-- Lefevre Wendy, Bouterfa Neila, Dinh Thomas
+- Aznag Kawtar, Rekmadi Faiza 10h20
 
-- Cohen Dan, Bonan Dan
+- Torelino Christelle, Cottin Aziliz 10h40
 
-- Dutueil Benjamin, Mollandin Fanny
+- Lefevre Wendy, Bouterfa Neila, Dinh Thomas 11h
+
+- Cohen Dan, Bonan Dan 11h20
+
+- Dutueil Benjamin, Mollandin Fanny 11h40
 
