@@ -1,7 +1,7 @@
 ---
 title: "Data Science, </br>Séance 1 : introduction"
 author: "Etienne Côme"
-date: "21 novembre 2018"
+date: "21 novembre 2019"
 output:
   revealjs::revealjs_presentation:
     theme: night
@@ -195,12 +195,9 @@ http://www.comeetie.fr/galerie/francepixels/</a></h4>
 
 
 
-## <span class="green">Projet, deezer playlists </span>
-- Données : [dépot git](https://github.com/comeetie/Deezerplay) 
-- Former des trinômes (semaine prochaine)
-- Définir un objectif
-- Rendu document Rmarkdown + présentation 
-- Date à définir durant la semaine banalisée
+## <span class="green">Projet, foot data</span>
+- Données : https://figshare.com/collections/Soccer_match_event_dataset/4415000/2
+
 
 ## Quelques pointeurs
 <ul>
