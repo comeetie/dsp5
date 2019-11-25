@@ -139,7 +139,7 @@ library(httr)
 ##
 ```{r, echo=TRUE,results='hide',fig.show='hide',out.height="8"}
 # definition des termes à scrapper 
-languages=c('python','julia-lang','r','sas','matlab','ggplot2')
+languages=c('python','r','sas','matlab','ggplot2')
 # initialisation de la table
 stackOF=data.frame(lang=languages,questions=NA)
 # boucle sur les termes
@@ -149,7 +149,7 @@ for(i in 1:length(languages)){
   res  = getURL(paste(base,stackOF[i,'lang'],sep=''))
   # la parser et récupérer le noeud désiré (xpath)
   resp = htmlTreeParse(res,useInternal=T)
-  ns1  = getNodeSet(resp, "//*[@id='mainbar']/div[4]/div[1]")  
+  ns1  = getNodeSet(resp, "//*[@id='mainbar']/div[4]/div/div[1]")  
   # récupérer la valeure et la nettoyer
   val  = xmlValue(ns1[[1]])
   valclean =  gsub("questions","",val);
@@ -167,6 +167,7 @@ title=paste("Popularité sur stackOverFlow",date)
 barplot(stackOF$questions,
         names.arg=stackOF$lang,
         main=title,ylab="Nombre de questions")
+
 ```
 
 ## <span class="green">Scrapper stackOverFlow</span> {data-background=#ffffff}
@@ -176,42 +177,13 @@ title=paste("Popularité sur stackOverFlow",date)
 barplot(stackOF$questions,
         names.arg=stackOF$lang,
         main=title,ylab="Nombre de questions")
+
 ```
 
 ## <span class="green">Scrapper leboncoin.fr</span>
 <p>Ecrire un script R permettant de scrapper le nombre d'annonce de particulier du site dans la catégorie "Jardinage" en région centre.
 </p>
 <a href="https://www.leboncoin.fr/jardinage/offres/centre/"><img src="./images/leboncoin.png" height="80%"></a>
-
-
-## <span class="green">Scrapper leboncoin.fr</span>
-
-
-```{r, echo=TRUE,results='hide',fig.show='hide',warning=FALSE}
-getURL_FA <- function(url){
-  result=GET(url,
-             add_headers(
-"User-Agent" = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0",
-"Accept"="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-"Accept-Language"="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"))
-  return(result)
-}
-```
-
-
-## <span class="green">Scrapper leboncoin.fr</span>
-```{r, echo=TRUE,warning=FALSE}
-# récupérer la page 
-res  = getURL_FA("https://www.leboncoin.fr/jardinage/offres/centre/")
-# la parser
-resp = htmlTreeParse(res,useInternal=T)
-# récupérer le noeud désiré (xpath)
-node = getNodeSet(resp, '//label[@for="result_part"]/span/span')
-# récupérer la valeure, supprimer l'espace et convertir en numérique  
-val  = as.numeric(gsub(" ","",xmlValue(node[[1]])))
-val
-```
-Finaliser pour récupérer les valeurs pour 4 régions et 4 catégories.
 
 
 
@@ -284,7 +256,6 @@ text(res$A,res$D,res$locaux,cex=res$affdom/20000)
 ```
 
 
-
 ##
 <span class="red"><h1> API</br>
 Application Programming Interface</h1></span>
@@ -315,7 +286,7 @@ stations=data.frame(id=as.numeric(data[1,]),name=data[2,],
 ## <span class="green">Vélib' et altitude des stations</span>
 
 API elevation
-```{r, echo=TRUE,warning=FALSE,cache=TRUE,results='hide'}
+```{r, echo=TRUE,cache=TRUE,results='hide'}
 chunk_size = 10
 # récupérer les altitudes
 base  = "https://elevation-api.io/api/elevation?points="
@@ -326,13 +297,13 @@ iv   = ((i-1)*chunk_size+1):min((i*chunk_size),dim(stations)[1])
 latlong = paste0("(",stations[iv,'lat'],",",stations[iv,'long'],")")
 query = paste(latlong,collapse=',')
 url   = paste(base,query,sep="")
-res   = fromJSON(getURL(url))
+res   = fromJSON(file=url)
 stations$alt[iv]=sapply(res$elevations,function(x){x$elevation})
 }
 ```
 
 ## <span class="green">Vélib' et altitude des stations</span> 
-```{r, echo=TRUE,warning=FALSE,comment=FALSE,cache=TRUE,fig.show='hide'}
+```{r, echo=TRUE,comment=FALSE,cache=TRUE,fig.show='hide'}
 # calculer l'indice de charge moyenne
 url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
 stationsData = fromJSON(file=url)
@@ -351,7 +322,7 @@ plot(stations$alt,stations$loading,xlab=xl,ylab=yl,main=ti)
 
 
 ## <span class="green">Vélib' et altitude des stations</span> {data-background="#ffffff"}
-```{r, echo=FALSE,warning=FALSE,comment=FALSE,cache=TRUE,message=FALSE}
+```{r, echo=FALSE,comment=FALSE,cache=TRUE,message=FALSE}
 # calculer l'indice de charge moyenne
 url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
 stationsData = fromJSON(file=url)
@@ -373,6 +344,8 @@ plot(stations$alt,stations$loading,xlab=xl,ylab=yl,main=ti)
 <p>Ecrire une fonction permettant de récupérer le nombre de fan d'un artiste en utilisant l'api deezer.</p>
 
 <p>vous vous servirez de la fonction <a href="https://developers.deezer.com/api/search">search</a> et de la fonction <a href="https://developers.deezer.com/api/search">artist</a> de cette API. </p>
+
+
 
 
 
