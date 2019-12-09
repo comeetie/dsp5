@@ -455,14 +455,16 @@ leaflet(data = sm.center.4326 ) %>%
 
 ## Exercice
 <p>Calculer et afficher les voronois associés aux stations velib de new-york.</p>
-<p>Utiliser pour cela la fonction st_as_sf avec l'option coords.</p>
+<p> Les données sont disponnibles dans le fichiers json ./data/inputNewYork.json</p>
+<p>Créer une data.frame avec les latitudes, longitudes et nbr de vélos des stations</p> 
+<p>Utiliser la fonction st_as_sf avec l'option coords pour transformer celle-ci en data.frame spatiale.</p>
 
 ## Exercice
 <p>Faire une carte interactive des monuments historiques à paris</p>
 <p>Faire une carte en symbol proportionel avec le nombre de monuments par iris.</p>
 <p>regarder la fonction st_overlaps</p>
 <p>! vous travaillerez avec des données en lambert 93</p>
-<p>Calculer la sensité de monuments par hectare pour chaque iris.</p>
+<p>Calculer la densité de monuments par hectare pour chaque iris.</p>
 <p>Faire une carte choroplète</p>
 <p>Les contours des iris sont disponnibles dans le répertoire "data/CONTOURS-IRIS/"
 <p>Les données sont disponibles dans le répertoire "data/monuments_paris.geojson"</p>
@@ -472,9 +474,6 @@ leaflet(data = sm.center.4326 ) %>%
 <p>Faire une carte en symboles proportionels du nombre de vélos dans les stations vélib à NewYork.</p>
 <p>Utiliser un fond de carte open street map avec la library cartography.</p>
 
+## Informations et exercices supplémentaires
+(dépot staRday)[http://github.comeetie.fr/satRday]
 
-## Sources
-
-<ul>
-<li> Thimothé Giraud / Kim antunez
-</ul>

@@ -19,8 +19,79 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 
+## Visualisation ?
+“Transformation of the symbolic into the geometric”</br>
+[McCormick et al. 1987]
+
+“... finding the artificial memory that best supports our
+natural means of perception.” </br>
+[Bertin 1967]
+
+“The use of computer-generated, interactive, visual
+representations of data to amplify cognition.”</br>
+[Card, Mackinlay, & Shneiderman 1999]
+
+
+## Pourquoi visualiser ?
+### Intégrer l'humain dans la boucle
+<ul>
+<li> Répondre a des questions ou trouver des questions ? 
+<li> Prendre des décisions
+<li> Remettre les données dans leur contexte
+<li> Amplifier la mémoire
+<li> Calcul graphique
+<li> Trouver des schémas, des patterns
+<li> Présenter des arguments
+<li> Inspirer
+</ul>
+
+## Pourquoi visualiser ?
+
+### Analyser :
+<ul>
+<li> Développer et critiquer des hypothèses
+<li> Découvrir des erreurs
+<li> Trouver des patterns
+</ul>
+
+### Communiquer
+<ul>
+<li> Partager et convaincre
+<li> Collaborer et réviser
+</ul>
+
+##<span class="red">Anscombe quartet</span>
+```{r,warning=FALSE,message=FALSE}
+library(dplyr)
+library(knitr)
+dd=data.frame(x=NULL,y=NULL,g=NULL)
+for(i in 1:4){
+dd=rbind(dd,data.frame(x=anscombe[,i],y=anscombe[,i+4],g=i))
+}
+kable(dd %>% group_by(g) %>% summarise(mean_x=mean(x),mean_y=mean(y),sd_x=sd(x),sd_y=sd(y)))
+```
+
+##<span class="red">Anscombe quartet</span> {data-background=#ffffff}
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+library(ggplot2)
+dd=data.frame(x=NULL,y=NULL,g=NULL)
+for(i in 1:4){
+dd=rbind(dd,data.frame(x=anscombe[,i],y=anscombe[,i+4],g=i))
+}
+ggplot(dd,aes(x=x,y=y,color=factor(g)))+geom_point()+geom_smooth(method='lm',se=FALSE,fullrange=TRUE,size=0.7,alpha=0.7)+facet_wrap(~g)
+```
+
+
+
+## Cholera map (John Snow)
+<img src="./images/cholera.jpg" height="70%"></img>
+
+
+
+
 ## 
 <h1 ><span class="green"> Visualiser </span><h1><h1>=</h1><h1>encoder dans des </h1><h1> <span class="red"> variables graphiques</span></h1><h1> les données</h1>
+
 
 
 ## <span class="red">Variables graphiques</span> {data-background=#ffffff}
@@ -33,6 +104,14 @@ knitr::opts_chunk$set(echo = FALSE)
 <img src="./images/bertin2.png" height="65%"/>
 <h4 class="orange" style="text-align:center"> Bertin Jacques, Sémiologie graphique, Paris, Mouton/Gauthier-Villars, 1967.</h4>
 
+## Marques // variables graphiques
+
+### Marques :
+Eléments de base du graphiques
+<img height="25%" src="images/channels.png"></img>
+
+### Variables graphique (chanels) :
+Ce qui va varier en fonctions des données
 
 ## <span class="red">Variables graphiques, marques </span> {data-background=#ffffff}
 <img src="./images/marks_chanels.png" height="95%"/>
@@ -48,7 +127,34 @@ Toutes les variables graphiques ne se valent pas.
 
 ## <span class="red">Variables graphiques, marques </span> {data-background=#ffffff}
 <img src="./images/marks_chanels4.png" height="95%"/>
-Ce quio est intéressant n'est pas toujours ce que l'on a au départ.
+<p style="color:black">Ce qui est intéressant n'est pas toujours ce que l'on a au départ.</p>
+
+## pré-attentive processing
+### Combien de 3 ?
+1281768756138976546984506985604982826762
+9809858458224509856458945098450980943585
+9091030209905959595772564675050678904567
+8845789809821677654876364908560912949686
+
+
+## pré-attentive processing
+### Combien de 3 ?
+12817687561<span style="color:#ffff00">3</span>8976546984506985604982826762
+980985845822450985645894509845098094<span style="color:#ffff00">3</span>585
+90910<span style="color:#ffff00">3</span>0209905959595772564675050678904567
+8845789809821677654876<span style="color:#ffff00">3</span>64908560912949686
+
+
+## <span class="red">pré-attentive processing</span> {data-background=#ffffff}
+<img height="500px" src="./images/colour_P.gif"></img>
+
+## <span class="red">pré-attentive processing</span> {data-background=#ffffff}
+<img height="500px" src="./images/shape_P.gif"></img>
+
+
+## <span class="red">pré-attentive processing</span> {data-background=#ffffff}
+<img height="500px" src="./images/conjoin_P.gif"></img>
+
 
 ## {data-background=#ffffff}
 <img src="./images/gggram1.png" height="95%"/> 
@@ -144,7 +250,7 @@ ggplot(data=m_cty_ordered)+
 ##
 <h1>Données Vélib' aggrégées :</h1>
 ```{r, echo=TRUE, message=FALSE,fig.height=5}
-url="http://vlsstats.ifsttar.fr/data/temporalstats_NewYork.json"
+url="http://vlsstats.ifsttar.fr/data/temporalstats_Velib2018.json"
 # lecture des données
 data=fromJSON(file=url)
 # construction d'une liste de data.frame homogènes
@@ -201,7 +307,7 @@ ggplot(data=tempstats.df,aes(x=time,y=max(nbbikes)-nbbikes))+
 ## Données Vélib par stations
 ```{r, echo=TRUE, message=FALSE,fig.height=5}
 # téléchargement et remise en forme des données
-url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_NewYork.json"
+url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
 data=fromJSON(file=url)
 extract = function(x){
   data.frame(id=x$'_id',
@@ -209,9 +315,10 @@ extract = function(x){
              nbbikes = x$available_bikes )
   }
 st_tempstats.df=do.call(rbind,lapply(data,extract))
-# selection de 3 stations
+sel = st_tempstats.df %>% select(id) %>% unique() %>% sample_n(8) %>% pull()
+# selection de quelques stations
 st_tempstats_sub.df = st_tempstats.df %>% 
-  filter(id %in% c(397,398,3637,474,525,2000,401))
+  filter(id %in% sel)
 ```
 
 ## Line charts superposés
@@ -329,14 +436,16 @@ $$\textrm{Lie factor} = \frac{783}{53} = 14.8$$
 $2.96\,cm^2$ calculer le lying factor ?</p>
 
 
+## Perception
+<img src="./images/stevenlaw.png" height="400"></img>
+$$S = I^p$$
+
 
 ##
 <h1>Principes :</h1>
 <h1 class="green">Augmenter la densité de données</h1>
 $$\textrm{graph data density} = \frac{\textrm{number of entries in data matrix}}{\textrm{area of data display}}$$
 </section>
-
-
 
 ##
 <h1 class="red">Data density :</h1>
@@ -538,7 +647,7 @@ ggplot(mpg,aes(y=cty,x=hwy))+
 Reprendre les échelles, légendes de cette figures
 ```{r, echo=TRUE, message=FALSE,fig.show='hide'}
 # téléchargement et remise en forme des données
-url="http://vlsstats.ifsttar.fr/data/spatiotemporalstats_NewYork.json"
+url="http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
 data=fromJSON(file=url)
 extract = function(x){
   data.frame(id=x$'_id',
@@ -548,7 +657,7 @@ extract = function(x){
 st_tempstats.df=do.call(rbind,lapply(data,extract))
 # selection de 3 stations
 st_tempstats_sub.df = st_tempstats.df %>% 
-  filter(id %in% c(397,398,3637,474,525,2000,401))
+  filter(id %in% sel)
 ggplot(data=st_tempstats_sub.df)+
   geom_line(aes(x=time,y=nbbikes,group=id,color=factor(id)),size=2)+
   facet_grid(id ~ .)
@@ -582,7 +691,7 @@ Reproduire ce graphique
 ```{r, echo=FALSE, message=FALSE}
 library(tidyr)
 # téléchargement et remise en forme des données
-url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_NewYork.json"
+url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
 data=fromJSON(file=url)
 extract = function(x){
   data.frame(id=x$'_id',
@@ -623,5 +732,9 @@ Informations supplémentaires :
 ## Sources
 
 <ul>
-<li> 
+<li> https://www.r-graph-gallery.com/index.html
+<li> http://www.cis.umassd.edu/~dkoop/cis467
+<li> https://www.namwkim.org/datavis
+<li> https://courses.cs.washington.edu/courses/cse512
+<li> https://serialmentor.com/dataviz/
 </ul>
