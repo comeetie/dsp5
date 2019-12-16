@@ -737,4 +737,5 @@ Informations supplémentaires :
 <li> https://www.namwkim.org/datavis
 <li> https://courses.cs.washington.edu/courses/cse512
 <li> https://serialmentor.com/dataviz/
+<li> http://socviz.co/gettingstarted.html
 </ul>
