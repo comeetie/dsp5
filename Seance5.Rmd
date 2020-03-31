@@ -3,14 +3,14 @@ title: "Data Science, </br>Séance 5 : dplyr, tidyr"
 author: "Etienne Côme"
 date: "21 novembre 2019"
 output:
+  beamer_presentation:
+    toc: false
+    incremental: false
   revealjs::revealjs_presentation:
     theme: night
     transition: none
     self_contained: true
     css: slides.css
-  beamer_presentation:
-    toc: false
-    incremental: false
 ---
 
 ```{r setup, include=FALSE}

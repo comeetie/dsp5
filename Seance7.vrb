@@ -1,0 +1,11 @@
+\frametitle{ggplot}
+\protect\hypertarget{ggplot-4}{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(mpg,}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{cty,}\DataTypeTok{y=}\NormalTok{hwy,}\DataTypeTok{color=}\NormalTok{manufacturer))}\OperatorTok{+}\KeywordTok{geom_jitter}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Seance7_files/figure-beamer/unnamed-chunk-24-1.pdf}
+

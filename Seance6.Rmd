@@ -3,14 +3,14 @@ title: "Data Science, </br>Séance 6 : Données spatiales"
 author: "Etienne Côme"
 date: "21 novembre 2018"
 output:
+  beamer_presentation:
+    toc: false
+    incremental: false
   revealjs::revealjs_presentation:
     theme: white
     transition: none
     self_contained: true
     css: slides.css
-  beamer_presentation:
-    toc: false
-    incremental: false
 ---
 
 ```{r setup, include=FALSE}
