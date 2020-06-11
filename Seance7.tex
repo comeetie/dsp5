@@ -286,7 +286,7 @@ Ce qui va varier en fonctions des données
 \begin{frame}{{Variables graphiques, marques }}
 \protect\hypertarget{variables-graphiques-marques-1}{}
 
- Toutes les variables graphiques ne se valent pas.
+Toutes les variables graphiques ne se valent pas.
 
 \end{frame}
 
@@ -635,7 +635,7 @@ en fonction du
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# téléchargement et remise en forme des données}
-\NormalTok{url =}\StringTok{ "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"}
+\NormalTok{url =}\StringTok{ "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Velib2018.json"}
 \NormalTok{data=}\KeywordTok{fromJSON}\NormalTok{(}\DataTypeTok{file=}\NormalTok{url)}
 \NormalTok{extract =}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{}
   \KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{id=}\NormalTok{x}\OperatorTok{$}\StringTok{'_id'}\NormalTok{,}
@@ -840,7 +840,7 @@ proportionelle à \(2.96\,cm^2\) calculer le lying factor ?
 \begin{frame}{Perception}
 \protect\hypertarget{perception}{}
 
- \[S = I^p\]
+\[S = I^p\]
 
 \end{frame}
 
@@ -1148,7 +1148,7 @@ Reprendre les échelles, légendes de cette figures
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# téléchargement et remise en forme des données}
-\NormalTok{url=}\StringTok{"http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"}
+\NormalTok{url=}\StringTok{"http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Velib2018.json"}
 \NormalTok{data=}\KeywordTok{fromJSON}\NormalTok{(}\DataTypeTok{file=}\NormalTok{url)}
 \NormalTok{extract =}\StringTok{ }\ControlFlowTok{function}\NormalTok{(x)\{}
   \KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{id=}\NormalTok{x}\OperatorTok{$}\StringTok{'_id'}\NormalTok{,}

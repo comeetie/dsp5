@@ -3,9 +3,6 @@ title: "Data Science, </br>Séance 7 : Visualisation avec ggplot"
 author: "Etienne Côme"
 date: "21 novembre 2018"
 output:
-  beamer_presentation:
-    toc: false
-    incremental: false
   revealjs::revealjs_presentation:
     theme: night
     transition: none
@@ -60,7 +57,8 @@ representations of data to amplify cognition.”</br>
 <li> Collaborer et réviser
 </ul>
 
-##<span class="red">Anscombe quartet</span>
+## <span class="red">Anscombe quartet</span>
+
 ```{r,warning=FALSE,message=FALSE}
 library(dplyr)
 library(knitr)
@@ -71,7 +69,8 @@ dd=rbind(dd,data.frame(x=anscombe[,i],y=anscombe[,i+4],g=i))
 kable(dd %>% group_by(g) %>% summarise(mean_x=mean(x),mean_y=mean(y),sd_x=sd(x),sd_y=sd(y)))
 ```
 
-##<span class="red">Anscombe quartet</span> {data-background=#ffffff}
+## <span class="red">Anscombe quartet</span> {data-background=#ffffff}
+
 ```{r,echo=FALSE,warning=FALSE,message=FALSE}
 library(ggplot2)
 dd=data.frame(x=NULL,y=NULL,g=NULL)
@@ -307,7 +306,7 @@ ggplot(data=tempstats.df,aes(x=time,y=max(nbbikes)-nbbikes))+
 ## Données Vélib par stations
 ```{r, echo=TRUE, message=FALSE,fig.height=5}
 # téléchargement et remise en forme des données
-url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
+url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Velib2018.json"
 data=fromJSON(file=url)
 extract = function(x){
   data.frame(id=x$'_id',
@@ -647,7 +646,7 @@ ggplot(mpg,aes(y=cty,x=hwy))+
 Reprendre les échelles, légendes de cette figures
 ```{r, echo=TRUE, message=FALSE,fig.show='hide'}
 # téléchargement et remise en forme des données
-url="http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
+url="http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Velib2018.json"
 data=fromJSON(file=url)
 extract = function(x){
   data.frame(id=x$'_id',
@@ -691,7 +690,7 @@ Reproduire ce graphique
 ```{r, echo=FALSE, message=FALSE}
 library(tidyr)
 # téléchargement et remise en forme des données
-url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Lyon.json"
+url = "http://vlsstats.ifsttar.fr/data/spatiotemporalstats_Velib2018.json"
 data=fromJSON(file=url)
 extract = function(x){
   data.frame(id=x$'_id',
