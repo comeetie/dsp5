@@ -89,7 +89,7 @@ ggplot(dd,aes(x=x,y=y,color=factor(g)))+geom_point()+geom_smooth(method='lm',se=
 
 
 ## 
-<h1 ><span class="green"> Visualiser </span><h1><h1>=</h1><h1>encoder dans des </h1><h1> <span class="red"> variables graphiques</span></h1><h1> les données</h1>
+<h1 > <span class="green"> Visualiser </span><h1><h1>=</h1><h1>encoder dans des </h1><h1> <span class="red"> variables graphiques</span></h1><h1> les données</h1>
 
 
 
